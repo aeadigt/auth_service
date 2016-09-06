@@ -1,0 +1,101 @@
+/*reset*/
+* {
+  vertical-align: baseline;
+  font-weight: inherit;
+  font-family: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  border: 0 none;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  }
+/*reset*/
+
+/*init*/
+body {
+  background-color: #eee;
+}
+
+input[type=text], input[type=password]{
+	margin-bottom: 20px;
+}
+/*init*/
+
+
+/*DIGT brand colors*/
+.blue {
+    background-color: #489FD1 !important;
+}
+
+.blue-text {
+    color: #489FD1 !important;
+}
+.online {
+  color: green;
+}
+.offline{
+  color: red;
+}
+
+.orange {
+    background-color: #FF7726 !important;
+}
+
+.orange-text {
+    color: #FF7726 !important;
+}
+
+.grey {
+    background-color: #565656 !important;
+}
+
+.grey-text {
+    color: #565656 !important;
+}
+
+.light-grey {
+    background-color: #f0f0f0 !important;
+}
+
+.light-grey-text {
+    color: #f0f0f0 !important;
+}
+/*DIGT brand colors*/
+
+/*header*/
+.header {
+    position: relative;
+    box-shadow: 0 0 30px #565656;
+}
+
+.header_logo{
+  cursor: pointer;
+}
+
+.logout{
+  margin-top: 10px;
+  margin-bottom: 10px; 
+}
+/*header*/
+
+/*auth form and user form*/
+.authform {
+  max-width: 330px;
+  margin: 0 auto;
+}
+
+.userform {
+  max-width: 330px;
+  margin: 0 auto;
+}
+/*auth form and user form*/
+
+/* content*/
+.content {
+  margin-top: 30px;  
+}
+.table_status{
+  font-size: 25px;
+}
+/* content*/
