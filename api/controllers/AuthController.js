@@ -1,3 +1,4 @@
+/*
 var atob = require('atob');
 module.exports = {
     login: function(req, res) {
@@ -28,5 +29,36 @@ module.exports = {
     logout: function(req, res) {
         req.session.destroy();
         res.send(200, {success:true});
+    }
+};
+*/
+
+
+
+var passport = require('passport');
+module.exports = {
+    login: function(req, res, next) {
+        passport.authenticate('local', function(error, user, info) {
+            if (error) {
+                next(new Error('Some error was occured'));
+            } else if (!user) {
+                next(info);
+            } else {
+                req.login(user, function(error) {
+                    if (error) {
+                        next(new Error(error));
+                    } else {
+                        res.send(200, {success: true});
+                    }
+                });
+            }
+        })(req, res); //IMPORTANT: обращаем внимание на то, что мы вызываем authenticate('login', ...)(req,res);
+        //Passport'у нужно получить значени€ логина\парол€ с req.body
+    },
+    logout: function(req, res, next) {
+        //„истим куки с нашим token'ом
+        res.clearCookie('token');
+        req.logout();
+        res.redirect('/');
     }
 };

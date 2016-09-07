@@ -46,7 +46,7 @@ $(document).ready(function() {
 });
 
 function authentication() {
-    console.log("авторизация document.cookie: " + document.cookie);
+    // console.log("авторизация document.cookie: " + document.cookie);
     //if (document.cookie) {
         sendAuthCallback({success: true});
     //}
@@ -65,8 +65,9 @@ function getModelsCallback(data) {
             var obj = {};
             obj[data[i].name] = Backbone.Model.extend(data[i]);
             App.Models[data[i].name] = obj[data[i].name];
-            init();
+
         }
+        init();
         App.Models.UserTable = Backbone.Model.extend({});
         App.Views.UserTable = Backbone.View.extend({
             initialize: function() {
@@ -76,12 +77,13 @@ function getModelsCallback(data) {
             className: 'table table-striped',
             render: function() {
 
-                var tableHeader = '<tr><th>Логин</th><th>Имя</th><th>Email</th><th></th><th></th></tr>';
+                var tableHeader = '<tr><th>Логин</th><th>Email</th><th>Имя</th><th>Владелец</th><th>Приложение</th><th>Группа</th><th>Права</th><th></th><th></th></tr>';
                 this.$el.append(tableHeader);
                 this.collection.each(this.addOne, this);
                 return this;
             },
             addOne: function(user) {
+
                 var userView = new App.Views.User({
                     model: user
                 });
@@ -97,6 +99,7 @@ function getModelsCallback(data) {
             tagName: 'tr',
             template: template('userRowTemplate'),
             render: function() {
+                //console.log(this.model.toJSON());
                 var template = this.template(this.model.toJSON());
                 this.$el.html(template);
                 return this;
@@ -109,9 +112,11 @@ function getModelsCallback(data) {
                 'click .delete': 'destroyUser'
             },
             editUser: function(e) {
+
                 new App.Views.UserForm({
                     model: this.model
                 });
+
                 // var newUserLogin = prompt('Как переименовать пользователя?', this.model.get('login'));
                 // if (!newUserLogin) return;
                 // this.model.set('login', newUserLogin);
@@ -121,6 +126,152 @@ function getModelsCallback(data) {
                 this.model.destroy();
             }
         });
+
+
+
+        App.Models.AppsSelect = Backbone.Model.extend({});
+        App.Views.AppsSelect = Backbone.View.extend({
+            initialize: function() {
+                this.collection.on('add', this.addOne, this);
+            },
+            tagName: 'select',
+            id: 'userFormApp',
+            render: function() {
+                this.collection.each(this.addOne, this);
+                return this;
+            },
+            addOne: function(app) {
+                //console.log(user);
+                var appView = new App.Views.App({
+                    model: app
+                });
+                this.$el.append(appView.render().el);
+            }
+        });
+        App.Views.App = Backbone.View.extend({
+            initialize: function() {
+                this.model.on('change', this.render, this);
+                this.model.on('destroy', this.remove, this);
+            },
+            tagName: 'option',
+            render: function() {
+                //console.log(this.model.toJSON());
+                $(this.el).attr('value',this.model.get('id')).html(this.model.get('name'));
+                return this;
+            },
+            remove: function() {
+                this.$el.remove();
+            }
+        });
+
+        App.Models.CustomersSelect = Backbone.Model.extend({});
+        App.Views.CustomersSelect = Backbone.View.extend({
+            initialize: function() {
+                this.collection.on('add', this.addOne, this);
+            },
+            tagName: 'select',
+            id: 'userFormCustomer',
+            render: function() {
+                this.collection.each(this.addOne, this);
+                return this;
+            },
+            addOne: function(customer) {
+                //console.log(user);
+                var customerView = new App.Views.Customer({
+                    model: customer
+                });
+                this.$el.append(customerView.render().el);
+            }
+        });
+        App.Views.Customer = Backbone.View.extend({
+            initialize: function() {
+                this.model.on('change', this.render, this);
+                this.model.on('destroy', this.remove, this);
+            },
+            tagName: 'option',
+            render: function() {
+                //console.log(this.model.toJSON());
+                $(this.el).attr('value',
+                this.model.get('id')).html(this.model.get('name'));
+                return this;
+            },
+            remove: function() {
+                this.$el.remove();
+            }
+        });
+
+        App.Models.GroupsSelect = Backbone.Model.extend({});
+        App.Views.GroupsSelect = Backbone.View.extend({
+            initialize: function() {
+                this.collection.on('add', this.addOne, this);
+            },
+            tagName: 'select',
+            id: 'userFormGroup',
+            render: function() {
+                this.collection.each(this.addOne, this);
+                return this;
+            },
+            addOne: function(group) {
+                //console.log(user);
+                var groupView = new App.Views.Group({
+                    model: group
+                });
+                this.$el.append(groupView.render().el);
+            }
+        });
+        App.Views.Group = Backbone.View.extend({
+            initialize: function() {
+                this.model.on('change', this.render, this);
+                this.model.on('destroy', this.remove, this);
+            },
+            tagName: 'option',
+            render: function() {
+                //console.log(this.model.toJSON());
+                $(this.el).attr('value',
+                this.model.get('id')).html(this.model.get('name'));
+                return this;
+            },
+            remove: function() {
+                this.$el.remove();
+            }
+        });
+
+        App.Models.RolesSelect = Backbone.Model.extend({});
+        App.Views.RolesSelect = Backbone.View.extend({
+            initialize: function() {
+                this.collection.on('add', this.addOne, this);
+            },
+            tagName: 'select',
+            id: 'userFormRole',
+            render: function() {
+                this.collection.each(this.addOne, this);
+                return this;
+            },
+            addOne: function(role) {
+                //console.log(user);
+                var roleView = new App.Views.Role({
+                    model: role
+                });
+                this.$el.append(roleView.render().el);
+            }
+        });
+        App.Views.Role = Backbone.View.extend({
+            initialize: function() {
+                this.model.on('change', this.render, this);
+                this.model.on('destroy', this.remove, this);
+            },
+            tagName: 'option',
+            render: function() {
+                //console.log(this.model.toJSON());
+                $(this.el).attr('value',
+                this.model.get('id')).html(this.model.get('name'));
+                return this;
+            },
+            remove: function() {
+                this.$el.remove();
+            }
+        });
+
         App.Views.UserForm = Backbone.View.extend({
             initialize: function() {
                 this.render();
@@ -143,9 +294,91 @@ function getModelsCallback(data) {
 
             template: template('modalUserFormTemplate'),
             render: function() {
+
                 var template = this.template(this.model.toJSON());
                 this.$el.html(template);
-                return this;
+
+                var appsSelectView, customersSelectView, groupsSelectView, rolesSelectView;
+                var apps = new App.Models.Apps();
+                var body = this.$el;
+                var userForm = this;
+                apps.fetch({
+                    success: function (apps_model, apps_response) {
+                        window.apps = new App.Collections.Apps(apps_response);
+                        appsSelectView = new App.Views.AppsSelect({
+                            collection: window.apps
+                        });
+                        body.find('div.modal-body').append('<label for="userFormApp">Приложение</label>');
+                        var app_select = appsSelectView.render().el;
+                        body.find('div.modal-body').append(app_select);
+
+
+                        $(app_select).children().each(function() {
+                            if (!isEmpty(userForm.model.attributes) && $(this).text() == userForm.model.attributes.app.name){
+                                $(this).attr("selected","selected");
+                            }
+                        });
+                        body.find('div.modal-body').append('<br/>');
+                        var customers = new App.Models.Customers();
+                        customers.fetch({
+                            success: function (customers_model, customers_response) {
+                                window.customers = new App.Collections.Customers(customers_response);
+                                customersSelectView = new App.Views.CustomersSelect({
+                                    collection: window.customers
+                                });
+                                body.find('div.modal-body').append('<label for="userFormCustomer">Владелец</label>');
+                                var customer_select = customersSelectView.render().el;
+                                body.find('div.modal-body').append(customer_select);
+
+                                $(customer_select).children().each(function() {
+                                    if (!isEmpty(userForm.model.attributes) && $(this).text() == userForm.model.attributes.customer.name){
+                                        $(this).attr("selected","selected");
+                                    }
+                                });
+                                body.find('div.modal-body').append('<br/>');
+                                var groups = new App.Models.Groups();
+                                groups.fetch({
+                                    success: function (groups_model, groups_response) {
+                                        window.groups = new App.Collections.Groups(groups_response);
+                                        groupsSelectView = new App.Views.GroupsSelect({
+                                            collection: window.groups
+                                        });
+                                        body.find('div.modal-body').append('<label for="userFormGroup">Группа</label>');
+                                        var group_select = groupsSelectView.render().el;
+                                        body.find('div.modal-body').append(group_select);
+                                        $(group_select).children().each(function() {
+                                            if (!isEmpty(userForm.model.attributes) && $(this).text() == userForm.model.attributes.group.name){
+                                                $(this).attr("selected","selected");
+                                            }
+                                        });
+                                        body.find('div.modal-body').append('<br/>');
+                                        var roles = new App.Models.Roles();
+                                        roles.fetch({
+                                            success: function (roles_model, roles_response) {
+                                                window.roles = new App.Collections.Roles(roles_response);
+                                                rolesSelectView = new App.Views.RolesSelect({
+                                                    collection: window.roles
+                                                });
+                                                body.find('div.modal-body').append('<label for="userFormRole">Права</label>');
+                                                var roles_select = rolesSelectView.render().el;
+                                                body.find('div.modal-body').append(roles_select);
+                                                $(roles_select).children().each(function() {
+                                                    if (!isEmpty(userForm.model.attributes) && $(this).text() == userForm.model.attributes.role.name){
+                                                        $(this).attr("selected","selected");
+                                                    }
+                                                });
+                                                body.find('div.modal-body').append('<br/>');
+
+
+                                                return userForm;
+                                            }
+                                        })
+                                    }
+                                })
+                            }
+                        })
+                    }
+                });
             },
             remove: function() {
                 this.$el.remove();
@@ -158,6 +391,10 @@ function getModelsCallback(data) {
                 var newUserPassword = this.$el.find('#userFormPassword').val();
                 var newUserName = this.$el.find('#userFormName').val();
                 var newUserEmail = this.$el.find('#userFormEmail').val();
+                var newUserCustomer = this.$el.find('#userFormCustomer').val();
+                var newUserGroup = this.$el.find('#userFormGroup').val();
+                var newUserRole = this.$el.find('#userFormRole').val();
+                var newUserApp = this.$el.find('#userFormApp').val();
                 if (!newUserLogin || !newUserPassword || !newUserName || !newUserEmail) {
                     alert('Поля Логин и Пароль должны быть заполнены!')
                     return;
@@ -170,37 +407,50 @@ function getModelsCallback(data) {
                     alert('Please enter a valid email address.');
                     return;
                 }
-                /*
+
                 this.model.set('login', newUserLogin);
                 this.model.set('password', newUserPassword);
                 this.model.set('name', newUserName);
                 this.model.set('email', newUserEmail);
-                */
+                this.model.set('customer', newUserCustomer);
+                this.model.set('app', newUserApp);
+                this.model.set('group', newUserGroup);
+                this.model.set('role', newUserRole);
 
                 if (this.model.attributes.id) {
-                    this.model.save({
-                        login: newUserLogin,
-                        password: newUserPassword,
-                        name: newUserName,
-                        email: newUserEmail
-                    }, {
-                        success: function() {
-                            //console.log("saveUser success");
-                        },
-                        error: function() {
-                            alert('Не удалось сохранить изменения');
-                        }
-                    });
+                    this.model.save();
                 } else {
-                    users.create(this.model);
+                    this.model.save(null,{success: function (res_model, response) {
+                         users.create(res_model);
+                    }});
                 }
                 this.$el.modal('hide');
             }
         });
+
+
+
         App.Collections.Users = Backbone.Collection.extend({
             model: App.Models.Users,
             url: '/user'
         });
+        App.Collections.Customers = Backbone.Collection.extend({
+            model: App.Models.Customers,
+            url: '/customers'
+        });
+        App.Collections.Apps = Backbone.Collection.extend({
+            model: App.Models.Apps,
+            url: '/apps'
+        });
+        App.Collections.Groups = Backbone.Collection.extend({
+            model: App.Models.Groups,
+            url: '/groups'
+        });
+        App.Collections.Roles = Backbone.Collection.extend({
+            model: App.Models.Roles,
+            url: '/roles'
+        });
+
         authentication();
     } else {
         alert('BackBone Models not exists in database!')
@@ -243,7 +493,7 @@ function sendAuth() {
     if ($("#inputLogin").val() && $("#inputPassword").val()){
         $.ajax({
             url: "/auth/login",
-            data: "token=" + btoa($("#inputLogin").val() + ":" + $("#inputPassword").val()),
+            data: "login=" + $("#inputLogin").val() + "&password=" + $("#inputPassword").val(),
             success: sendAuthCallback
         });
     } else {
@@ -274,6 +524,7 @@ function sendAuthCallback(res) {
 
 // print userTable
 function getUsersCallback(model, response) {
+
     window.users = new App.Collections.Users(response);
     var userTableView = new App.Views.UserTable({
         collection: users
@@ -309,4 +560,29 @@ function getUsersCallback(model, response) {
     headerView.$el.find('.logout').removeClass('hidden');
     window.headerView.$el.find('.logout').show();
     window.authFormView.remove();
+}
+
+function isEmpty(obj) {
+
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+
+    // If it isn't an object at this point
+    // it is empty, but it can't be anything *but* empty
+    // Is it empty?  Depends on your application.
+    if (typeof obj !== "object") return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
 }

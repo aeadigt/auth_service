@@ -22,12 +22,18 @@
         </div>
     </script>
     <script id="userRowTemplate" type="text/template">
+
         <td class="table_login"><%= login %></td>
-        <td><%= name %></td>
         <td><%= email %></td>
+        <td><%= name %></td>
+        <td><%= customer.name %></td>
+        <td><%= app.name %></td>
+        <td><%= group.name %></td>
+        <td><%= role.name %></td>
         <td class="text-center"><button class="btn btn-sm btn-primary edit">Редактировать</button></td>
         <td class="text-center"><button class="btn btn-sm btn-danger delete">Удалить</button></td>
     </script>
+
     <script id="modalUserFormTemplate" type="text/template">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -41,20 +47,21 @@
                     <input type="text" id="userFormLogin" class="form-control" placeholder="Логин" value="<%= login %>" required autofocus>
                     <label for="userFormPassword">Пароль</label>
                     <input type="password" id="userFormPassword" class="form-control" placeholder="Пароль" value="<%- atob(encryptedPassword) %>" required>
-                    <label for="userFormName">Имя</label>
-                    <input type="text" id="userFormName" class="form-control" placeholder="Имя" value="<%= name %>">
                     <label for="userFormEmail">Email</label>
                     <input type="email" id="userFormEmail" class="form-control" placeholder="Email" value="<%= email %>">
+                    <label for="userFormName">Имя</label>
+                    <input type="text" id="userFormName" class="form-control" placeholder="Имя" value="<%= name %>" required>
                 <% } else { %>
                     <label for="userFormLogin">Логин</label>
                     <input type="text" id="userFormLogin" class="form-control" placeholder="Логин" value="" required autofocus>
                     <label for="userFormPassword">Пароль</label>
                     <input type="password" id="userFormPassword" class="form-control" placeholder="Пароль" value="" required>
-                    <label for="userFormName">Имя</label>
-                    <input type="text" id="userFormName" class="form-control" placeholder="Имя" value="">
                     <label for="userFormEmail">Email</label>
                     <input type="email" id="userFormEmail" class="form-control" placeholder="Email" value="">
+                    <label for="userFormName">Имя</label>
+                    <input type="text" id="userFormName" class="form-control" placeholder="Имя" value="" required>
                 <% } %>
+
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>

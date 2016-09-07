@@ -23,6 +23,22 @@ module.exports = {
 	            type: "string",
 	            email: true
 		},
+		group:{
+			model: 'Groups',
+			required: true
+		},
+		role:{
+			model: 'Roles',
+			required: true
+		},
+		app:{
+			model: 'Apps',
+			required: true
+		},
+		customer:{
+			model: 'Customers',
+			required: true
+		},
 		encryptedPassword: {
 	            type: 'string'
 		},

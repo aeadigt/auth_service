@@ -26,10 +26,10 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-   '*': true,
+   '*': false,
+   backbonemodel:true,
    users: {
-     find: "authenticated",
-     '*': "admin"
+     '*': "authenticated"
    },
    auth:{
      login: true,
