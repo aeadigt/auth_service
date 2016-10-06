@@ -26,7 +26,7 @@ module.exports.policies = {
   *                                                                          *
   ***************************************************************************/
 
-   '*': false,
+   '*': true,
    backbonemodel:true,
    users: {
      '*': "authenticated"

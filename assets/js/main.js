@@ -1,6 +1,5 @@
 // GLOBALS
 var globalFromForm, globalFromLogin, globalIsAuth;
-
 $(document).ready(function() {
     window.App = {
         Models: {},
@@ -8,7 +7,6 @@ $(document).ready(function() {
         Collections: {},
         Router: {}
     };
-
     window.template = function(id) {
         return _.template($('#' + id).html());
     };
@@ -46,10 +44,7 @@ $(document).ready(function() {
 });
 
 function authentication() {
-    // console.log("авторизация document.cookie: " + document.cookie);
-    //if (document.cookie) {
-        sendAuthCallback({success: true});
-    //}
+    sendAuthCallback({success: true});
 }
 
 function getBackboneModels() {
@@ -60,7 +55,7 @@ function getBackboneModels() {
 }
 
 function getModelsCallback(data) {
-    if (data){
+    if (data) {
         for (var i = 0, size = data.length; i < size; i++){
             var obj = {};
             obj[data[i].name] = Backbone.Model.extend(data[i]);
@@ -76,14 +71,12 @@ function getModelsCallback(data) {
             tagName: 'table',
             className: 'table table-striped',
             render: function() {
-
                 var tableHeader = '<tr><th>Логин</th><th>Email</th><th>Имя</th><th>Владелец</th><th>Приложение</th><th>Группа</th><th>Права</th><th></th><th></th></tr>';
                 this.$el.append(tableHeader);
                 this.collection.each(this.addOne, this);
                 return this;
             },
             addOne: function(user) {
-
                 var userView = new App.Views.User({
                     model: user
                 });
@@ -112,11 +105,9 @@ function getModelsCallback(data) {
                 'click .delete': 'destroyUser'
             },
             editUser: function(e) {
-
                 new App.Views.UserForm({
                     model: this.model
                 });
-
                 // var newUserLogin = prompt('Как переименовать пользователя?', this.model.get('login'));
                 // if (!newUserLogin) return;
                 // this.model.set('login', newUserLogin);
@@ -126,8 +117,6 @@ function getModelsCallback(data) {
                 this.model.destroy();
             }
         });
-
-
 
         App.Models.AppsSelect = Backbone.Model.extend({});
         App.Views.AppsSelect = Backbone.View.extend({
@@ -294,7 +283,6 @@ function getModelsCallback(data) {
 
             template: template('modalUserFormTemplate'),
             render: function() {
-
                 var template = this.template(this.model.toJSON());
                 this.$el.html(template);
 
@@ -311,8 +299,6 @@ function getModelsCallback(data) {
                         body.find('div.modal-body').append('<label for="userFormApp">Приложение</label>');
                         var app_select = appsSelectView.render().el;
                         body.find('div.modal-body').append(app_select);
-
-
                         $(app_select).children().each(function() {
                             if (!isEmpty(userForm.model.attributes) && $(this).text() == userForm.model.attributes.app.name){
                                 $(this).attr("selected","selected");
@@ -368,8 +354,6 @@ function getModelsCallback(data) {
                                                     }
                                                 });
                                                 body.find('div.modal-body').append('<br/>');
-
-
                                                 return userForm;
                                             }
                                         })
@@ -399,8 +383,6 @@ function getModelsCallback(data) {
                     alert('Поля Логин и Пароль должны быть заполнены!')
                     return;
                 }
-
-
                 var re =  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                 if (!re.test(newUserEmail))
                 {
@@ -427,8 +409,6 @@ function getModelsCallback(data) {
                 this.$el.modal('hide');
             }
         });
-
-
 
         App.Collections.Users = Backbone.Collection.extend({
             model: App.Models.Users,
@@ -524,7 +504,6 @@ function sendAuthCallback(res) {
 
 // print userTable
 function getUsersCallback(model, response) {
-
     window.users = new App.Collections.Users(response);
     var userTableView = new App.Views.UserTable({
         collection: users
@@ -563,7 +542,6 @@ function getUsersCallback(model, response) {
 }
 
 function isEmpty(obj) {
-
     // null and undefined are "empty"
     if (obj == null) return true;
 
@@ -583,6 +561,5 @@ function isEmpty(obj) {
     for (var key in obj) {
         if (hasOwnProperty.call(obj, key)) return false;
     }
-
     return true;
 }

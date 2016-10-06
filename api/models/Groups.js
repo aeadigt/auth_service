@@ -1,7 +1,6 @@
 module.exports = {
-
   attributes: {
-  	name:{
+  	name: {
   		type: "string",
   		required: true,
   		unique: true
